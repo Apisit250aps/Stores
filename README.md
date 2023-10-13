@@ -216,4 +216,5 @@ graph LR
     ProductTypeData --> ShopData
     User --> ShopData
     User --> CustomerData
+
 ```
