@@ -20,9 +20,16 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # customer
     path('', views.index, name='index'),
     path('cart', views.cart, name='cart'),
     path('order', views.order, name='order'),
+    
+    # account
     path('account', views.account, name='account'),
     path('shop', views.shop, name='shop'),
+    
+    # auth
+    path('login', views.login, name='login'),
+    path('register', views.register, name='register'),
 ]
