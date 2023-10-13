@@ -8,7 +8,6 @@ class CustomerData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     customer_code = models.CharField(max_length=8, unique=True)
-    customer_name = models.CharField(max_length=128)
     customer_contact = models.CharField(max_length=255)
     customer_address = models.TextField()
     customer_sub_district = models.CharField(max_length=128)
@@ -25,8 +24,7 @@ class CustomerData(models.Model):
     def __str__(self):
         
         return self.customer_code+" "+self.customer_name
-    
-    
+ 
 class OutputInvoice(models.Model):
     customer = models.ForeignKey(CustomerData, on_delete=models.CASCADE)
     
