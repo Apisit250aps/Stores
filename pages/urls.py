@@ -16,19 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from . import views as api
+
+from . import views
 
 urlpatterns = [
-
-    # authentications
-    path('login', api.userLogin, name='login-api'),
-    path('logout', api.userLogout, name='logout-api'),
-    path('register', api.userRegister, name='register-api'),
+    # customer
+    path('', views.index, name='index'),
+    path('cart', views.cart, name='cart'),
+    path('order', views.order, name='order'),
     
+    # account
+    path('account', views.account, name='account'),
+    path('shop', views.shop, name='shop'),
     
-    # customers
-    path('auth/edit', api.editCustomer, name='customer-edit-api'),
-    path('auth/create', api.registerCustomer, name='customer-register-api'),
-    path('auth/data', api.getUserCustomer, name='customer-user-api')
-    
+    # auth
+    path('login', views.login, name='login'),
+    path('register', views.register, name='register'),
 ]

@@ -1,7 +1,7 @@
 {% extends "auth/base.html" %}
 {% block title %}Register{% endblock title %}
 {% block content %}
-<div class="container-xxl">
+<div class="container-xxl" id="app">
     <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
             <!-- Register Card -->
@@ -62,24 +62,30 @@
                     <!-- /Logo -->
                     <h4 class="mb-2">Adventure starts here 🚀</h4>
                     <p class="mb-4">Make your app management easy and fun!</p>
-                    <form id="app" class="mb-3">
+
+                    <div v-show="on_alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong>[{message_alert}]</strong>
+                    </div>
+
+                    <form class="mb-3">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username"
-                                placeholder="Enter your username" autofocus />
+                                placeholder="Enter your username" autofocus v-model="username" />
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="text" class="form-control" id="email" name="email"
-                                placeholder="Enter your email" />
+                                placeholder="Enter your email" v-model="email" />
                         </div>
                         <div class="mb-3 form-password-toggle">
                             <label class="form-label" for="password">Password</label>
                             <div class="input-group input-group-merge">
                                 <input type="password" id="password" class="form-control" name="password"
                                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                    aria-describedby="password" />
+                                    aria-describedby="password" v-model="password" />
                                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
                         </div>
@@ -88,7 +94,7 @@
                             <div class="input-group input-group-merge">
                                 <input type="password" id="confirm" class="form-control" name="confirm"
                                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                    aria-describedby="confirm" />
+                                    aria-describedby="confirm" v-model="confirm" />
                                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
                         </div>
@@ -103,7 +109,8 @@
                                 </label>
                             </div>
                         </div>
-                        <button class="btn btn-primary d-grid w-100">Sign up</button>
+                        <button type="submit" @click="onSubmit($event)" class="btn btn-primary d-grid w-100">Sign
+                            up</button>
                     </form>
 
                     <p class="text-center">
@@ -134,7 +141,7 @@
                     username_isValid: true,
                     password_isValid: true,
 
-                    on_alert: true,
+                    on_alert: false,
                     message_alert: "",
 
                     auto_login: false,
@@ -175,14 +182,42 @@
                         axios(
                             {
                                 method: "post",
-                                url: "",
+                                url: "{% url 'register-api' %}",
                                 data: form_data
                             }
                         )
                             .then((response) => {
                                 if (response.data['status']) {
                                     if (this.auto_login) {
-                                        location.replace("{% url 'index' %}");
+
+                                        const form_data = new FormData;
+                                        form_data.append('csrfmiddlewaretoken', '{{csrf_token}}');
+                                        form_data.append('username', this.username);
+                                        form_data.append('password', this.password);
+
+                                        axios(
+                                            {
+                                                method: "post",
+                                                url: "{% url 'login-api' %}",
+                                                data: form_data
+                                            }
+                                        )
+                                            .then((response) => {
+                                                if (response.data['status']) {
+                                                    location.replace("{% url 'index' %}");
+                                                }
+                                                else {
+                                                    this.on_alert = true,
+                                                        this.message_alert = response.data['message'];
+                                                }
+
+                                            }).catch((err) => {
+                                                Swal.fire(
+                                                    'The Internet?',
+                                                    'That thing is still around?',
+                                                    'question'
+                                                );
+                                            });
                                     }
                                     else {
                                         Swal.fire(
@@ -193,8 +228,8 @@
                                     }
                                 }
                                 else {
-                                    this.on_alert = true,
-                                        this.message_alert = response.data['message'];
+                                    this.on_alert = true;
+                                    this.message_alert = response.data['message'];
                                 }
 
                             }).catch((err) => {

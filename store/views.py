@@ -23,42 +23,6 @@ from . import models
 @csrf_exempt
 @api_view(["POST", ])
 @permission_classes((AllowAny,))
-def userRegister(request):
-    email = request.data['email']
-    username = request.data['username']
-    password = request.data['password']
-    
-    try :
-        user = User.objects.create_user(
-            email=email,
-            username=username,
-            password=password
-        )
-        
-        if user :
-            status = True
-            message = "success"
-        else :
-            status = False
-            message = "fail"
-            
-    except Exception as err :
-        status = False
-        message = "something is error!"
-        
-        print(err)
-        
-    
-    return Response(
-        {
-            "status":status,
-            "message":message
-        }
-    )
-
-@csrf_exempt
-@api_view(["POST", ])
-@permission_classes((AllowAny,))
 def shopRegister(request):
     # Auth
     user = User.objects.get(username=request.user.username)

@@ -23,7 +23,7 @@ class CustomerData(models.Model):
     
     def __str__(self):
         
-        return self.customer_code+" "+self.customer_name
+        return self.customer_code+" "+self.customer_contact
  
 class OutputInvoice(models.Model):
     customer = models.ForeignKey(CustomerData, on_delete=models.CASCADE)

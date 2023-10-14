@@ -14,7 +14,10 @@
       </li>
     </ul>
     <div class="card mb-4">
-      <h5 class="card-header">Profile Details</h5>
+      <div class="card-header">
+        <h5>Profile</h5>
+        <b>{{user}}</b>
+      </div>
       <!-- Account -->
       <div class="card-body">
         <!-- <div class="d-flex align-items-start align-items-sm-center gap-4">
@@ -37,92 +40,398 @@
       </div>
       <hr class="my-0" />
       <div class="card-body">
-        <form id="formAccountSettings" >
+        <form>
           <div class="row row-cols-1 row-cols-lg-2">
             <div class="col mb-2">
               <label for="fname" class="form-label">First name</label>
-              <input type="text" name="" id="fname" class="form-control">
+              <input type="text" name="" id="fname" class="form-control" v-model="customer_data.fname">
             </div>
             <div class="col mb-2">
               <label for="lname" class="form-label">Last name</label>
-              <input type="text" name="" id="lname" class="form-control">
+              <input type="text" name="" id="lname" class="form-control" v-model="customer_data.lname">
             </div>
           </div>
           <div class="row row-cols-1 row-cols-lg-2">
             <div class="col mb-2">
               <label for="tel" class="form-label">Tel.</label>
-              <input type="tel" id="tel" class="form-control" placeholder="Phone number" />
+              <input type="tel" id="tel" class="form-control" placeholder="Phone number" v-model="customer_data.tel" />
             </div>
             <div class="col mb-2">
               <label for="fax" class="form-label">Fax</label>
-              <input type="tel" id="fax" class="form-control" placeholder="Fax number" />
+              <input type="tel" id="fax" class="form-control" placeholder="Fax number" v-model="customer_data.fax" />
             </div>
             <div class="col mb-2">
               <label for="email" class="form-label">Email</label>
-              <input type="email" id="email" class="form-control" placeholder="Email" />
+              <input type="email" id="email" class="form-control" placeholder="Email" v-model="customer_data.email" />
             </div>
             <div class="col mb-2">
               <label for="remark" class="form-label">Remark</label>
-              <input type="text" id="remark" class="form-control" placeholder="Remark" />
+              <input type="text" id="remark" class="form-control" placeholder="Remark" v-model="customer_data.remark" />
             </div>
-          </div>pytho
+          </div>
           <div class="row row-cols-1 row-cols-lg-2">
             <div class="col mb-2">
               <label for="province" class="form-label">Province</label>
-              <select name="" id="province" class="form-control">
-                <option value="">1</option>
-              </select>
+              <input type="text" id="province" class="form-control" placeholder="Remark"
+                v-model="customer_data.province" list="provinces" />
+              <datalist id="provinces">
+                <option value="asdd">asdd</option>
+              </datalist>
             </div>
             <div class="col mb-2">
               <label for="district" class="form-label">District</label>
-              <select name="" id="district" class="form-control">
-                <option value="">1</option>
-              </select>
+              <input type="text" id="district" class="form-control" placeholder="Remark"
+                v-model="customer_data.district" list="districts" />
+              <datalist id="districts">
+                <option value="asdd">asdd</option>
+              </datalist>
             </div>
             <div class="col mb-2">
               <label for="sub_district" class="form-label">Sub District</label>
-              <select name="" id="sub_district" class="form-control">
-                <option value="">1</option>
-              </select>
+              <input type="text" id="sub_district" class="form-control" placeholder="Remark"
+                v-model="customer_data.sub_district" list="sub_districts" />
+              <datalist id="sub_districts">
+                <option value="asdd">asdd</option>
+              </datalist>
             </div>
             <div class="col mb-2">
               <label for="zip" class="form-label">Zip code</label>
-              <input type="text" id="zip" class="form-control" placeholder="Enter Zip Code" />
+              <input type="text" id="zip" class="form-control" placeholder="Enter Zip Code"
+                v-model="customer_data.zip" />
             </div>
           </div>
           <div class="row row-cols-1">
             <div class="col mb-2">
               <label for="address" class="form-label">Address</label>
-              <textarea name="address" class="form-control" id="" cols="30" rows="3"></textarea>
+              <textarea name="address" class="form-control" id="address" cols="30" rows="3"
+                v-model="customer_data.address"></textarea>
             </div>
           </div>
-          
           <div class="mt-2">
-            <button type="submit" class="btn btn-primary me-2">Save changes</button>
-            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+            <button v-show="onEdit" @click="onSubmit($event)" type="submit" class="btn btn-primary me-2">Save
+              changes</button>
+            <button v-show="!onEdit" @click="setEdit()" type="button" class="btn btn-primary me-2">Edit</button>
           </div>
         </form>
       </div>
       <!-- /Account -->
     </div>
-    <div class="card">
-      <h5 class="card-header">Delete Account</h5>
-      <div class="card-body">
-        <div class="mb-3 col-12 mb-0">
-          <div class="alert alert-warning">
-            <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
-            <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
-          </div>
-        </div>
-        <form id="formAccountDeactivation" onsubmit="return false">
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation" />
-            <label class="form-check-label" for="accountActivation">I confirm my account deactivation</label>
-          </div>
-          <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
-        </form>
-      </div>
-    </div>
+
   </div>
 </div>
 {% endblock %}
+{% block script %}
+<script>
+  const { createApp, computed } = Vue;
+  const App = createApp(
+    {
+      delimiters: ["[{", "}]"],
+      data() {
+        return {
+
+          views: "account",
+          customer_data: {
+            fname: "",
+            lname: "",
+            tel: "",
+            fax: "",
+            email: "",
+            remark: "",
+            province: "",
+            district: "",
+            sub_district: "",
+            zip: "",
+            address: "",
+          },
+          regis: true,
+
+          fname: "",
+          lname: "",
+          tel: "",
+          fax: "",
+          email: "",
+          remark: "",
+          province: "",
+          district: "",
+          sub_district: "",
+          zip: "",
+          address: "",
+
+          fname_isValid: true,
+          lname_isValid: true,
+          tel_isValid: true,
+          fax_isValid: true,
+          email_isValid: true,
+          remark_isValid: true,
+          province_isValid: true,
+          district_isValid: true,
+          sub_district_isValid: true,
+          zip_isValid: true,
+          address_isValid: true,
+
+          isValid: true,
+          onEdit: false,
+
+
+
+        };
+      },
+      mounted() {
+
+        axios(
+          {
+            method: "get",
+            url: "{% url 'customer-user-api' %}"
+          }
+        ).then((response) => {
+          if (response.data['status']) {
+
+            if (response.data['data'] != null) {
+
+              this.regis = false;
+
+              this.customer_data.fname = response.data['data'].customer_contact.split(" ")[0];
+              this.customer_data.lname = response.data['data'].customer_contact.split(" ")[1];
+              this.customer_data.tel = response.data['data'].customer_tel;
+              this.customer_data.fax = response.data['data'].customer_fax;
+              this.customer_data.email = response.data['data'].customer_email;
+              this.customer_data.remark = response.data['data'].customer_remark;
+              this.customer_data.province = response.data['data'].customer_province;
+              this.customer_data.district = response.data['data'].customer_district;
+              this.customer_data.sub_district = response.data['data'].customer_sub_district;
+              this.customer_data.zip = response.data['data'].customer_zip;
+              this.customer_data.address = response.data['data'].customer_address;
+            }
+            else {
+              this.regis = true;
+
+              this.customer_data.fname = "";
+              this.customer_data.lname = "";
+              this.customer_data.tel = "";
+              this.customer_data.fax = "";
+              this.customer_data.email = "";
+              this.customer_data.remark = "";
+              this.customer_data.province = "";
+              this.customer_data.district = "";
+              this.customer_data.sub_district = "";
+              this.customer_data.zip = "";
+              this.customer_data.address = "";
+            }
+
+          }
+
+        }).catch((err) => {
+
+        });
+
+        document.getElementById('fname').disabled = true;
+        document.getElementById('lname').disabled = true;
+        document.getElementById('tel').disabled = true;
+        document.getElementById('fax').disabled = true;
+        document.getElementById('email').disabled = true;
+        document.getElementById('remark').disabled = true;
+        document.getElementById('province').disabled = true;
+        document.getElementById('district').disabled = true;
+        document.getElementById('sub_district').disabled = true;
+        document.getElementById('zip').disabled = true;
+        document.getElementById('address').disabled = true;
+
+      },
+      computed: {
+        formDisable() {
+
+        }
+      },
+      methods: {
+        setEdit() {
+
+          this.onEdit = true;
+          document.getElementById('fname').disabled = false;
+          document.getElementById('lname').disabled = false;
+          document.getElementById('tel').disabled = false;
+          document.getElementById('fax').disabled = false;
+          document.getElementById('email').disabled = false;
+          document.getElementById('remark').disabled = false;
+          document.getElementById('province').disabled = false;
+          document.getElementById('district').disabled = false;
+          document.getElementById('sub_district').disabled = false;
+          document.getElementById('zip').disabled = false;
+          document.getElementById('address').disabled = false;
+
+        },
+        onSubmit(e) {
+          e.preventDefault();
+
+          this.isValid = true;
+
+          this.fname_isValid = true;
+          if (this.customer_data.fname == "") {
+            this.fname_isValid = false;
+            this.isValid = false;
+          }
+
+          this.lname_isValid = true;
+          if (this.customer_data.lname == "") {
+            this.lname_isValid = false;
+            this.isValid = false;
+          }
+
+          this.tel_isValid = true;
+          if (this.customer_data.tel == "") {
+            this.tel_isValid = false;
+            this.isValid = false;
+          }
+
+          this.fax_isValid = true;
+          if (this.customer_data.fax == "") {
+            this.fax_isValid = false;
+            this.isValid = false;
+          }
+
+          this.email_isValid = true;
+          if (this.customer_data.email == "") {
+            this.email_isValid = false;
+            this.isValid = false;
+          }
+
+          this.remark_isValid = true;
+          if (this.customer_data.remark == "") {
+            this.remark_isValid = false;
+            this.isValid = false;
+          }
+
+          this.province_isValid = true;
+          if (this.customer_data.province == "") {
+            this.province_isValid = false;
+            this.isValid = false;
+          }
+
+          this.district_isValid = true;
+          if (this.customer_data.district == "") {
+            this.district_isValid = false;
+            this.isValid = false;
+          }
+
+          this.sub_district_isValid = true;
+          if (this.customer_data.sub_district == "") {
+            this.sub_district_isValid = false;
+            this.isValid = false;
+          }
+
+          this.zip_isValid = true;
+          if (this.customer_data.zip == "") {
+            this.zip_isValid = false;
+            this.isValid = false;
+          }
+
+          this.address_isValid = true;
+          if (this.customer_data.address == "") {
+            this.address_isValid = false;
+            this.isValid = false;
+          }
+
+          if (this.isValid) {
+            const form_data = new FormData;
+
+            form_data.append('csrfmiddlewaretoken', "{{csrf_token}}");
+            form_data.append('fname', this.customer_data.fname);
+            form_data.append('lname', this.customer_data.lname);
+            form_data.append('tel', this.customer_data.tel);
+            form_data.append('fax', this.customer_data.fax);
+            form_data.append('email', this.customer_data.email);
+            form_data.append('remark', this.customer_data.remark);
+            form_data.append('province', this.customer_data.province);
+            form_data.append('district', this.customer_data.district);
+            form_data.append('sub_district', this.customer_data.sub_district);
+            form_data.append('zip', this.customer_data.zip);
+            form_data.append('address', this.customer_data.address);
+
+            if (this.regis) {
+              axios(
+                {
+                  method: "post",
+                  url: "{% url 'customer-register-api' %}",
+                  data: form_data
+
+                }
+              )
+                .then((response) => {
+                  if (response.data['status']) {
+                    Swal.fire(
+                      'Customer',
+                      'Data Saved!',
+                      'success'
+                    );
+                  }
+                  else {
+                    Swal.fire(
+                      'Customer',
+                      'Save Error!',
+                      'error'
+                    );
+                  }
+
+                }).catch((err) => {
+                  Swal.fire(
+                    'The Internet?',
+                    'That thing is still around?',
+                    'question'
+                  );
+                });
+            }
+            else {
+              axios(
+                {
+                  method: "post",
+                  url: "{% url 'customer-edit-api' %}",
+                  data: form_data
+
+                }
+              )
+                .then((response) => {
+                  if (response.data['status']) {
+                    Swal.fire(
+                      'Customer',
+                      'Data Update!',
+                      'success'
+                    );
+                  }
+                  else {
+                    Swal.fire(
+                      'Customer',
+                      'Update Fail!',
+                      'success'
+                    );
+                  }
+
+                }).catch((err) => {
+                  Swal.fire(
+                    'The Internet?',
+                    'That thing is still around?',
+                    'question'
+                  );
+                });
+            }
+
+          }
+          this.onEdit = false;
+          document.getElementById('fname').disabled = true;
+          document.getElementById('lname').disabled = true;
+          document.getElementById('tel').disabled = true;
+          document.getElementById('fax').disabled = true;
+          document.getElementById('email').disabled = true;
+          document.getElementById('remark').disabled = true;
+          document.getElementById('province').disabled = true;
+          document.getElementById('district').disabled = true;
+          document.getElementById('sub_district').disabled = true;
+          document.getElementById('zip').disabled = true;
+          document.getElementById('address').disabled = true;
+
+        }
+      }
+
+    }
+  );
+  App.mount("#app")
+</script>
+{% endblock script %}
