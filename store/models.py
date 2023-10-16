@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class ProductTypeData(models.Model):
     product_type = models.CharField(max_length=128, unique=True)
-    product_type_code = models.CharField(max_length=8, unique=True)
+    product_type_code = models.CharField(max_length=8, unique=True, null=True)
     
     def __str__(self):
         return self.product_type
@@ -18,7 +18,7 @@ class ProductCategory(models.Model):
         return self.product_category
     
 class ProductData(models.Model):
-    product_code = models.CharField(max_length=8, unique=True)
+    product_code = models.CharField(max_length=8, unique=True, null=True)
     product_name = models.CharField(max_length=255)
     product_desc = models.TextField()
     product_price = models.DecimalField(max_digits=9, decimal_places=2)
@@ -52,7 +52,7 @@ class ShopData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_type = models.ForeignKey(ProductTypeData, on_delete=models.CASCADE)
     
-    shop_code = models.CharField(max_length=8, unique=True)
+    shop_code = models.CharField(max_length=8, unique=True, null=True)
     shop_name = models.CharField(max_length=128)
     shop_contact = models.CharField(max_length=255)
     shop_area = models.ForeignKey(AreaData, on_delete=models.CASCADE)
@@ -70,7 +70,7 @@ class ShopData(models.Model):
     
     def __str__(self):
         
-        return self.shop_code+" "+self.shop_name
+        return self.shop_name
 
 
 class InputInvoice(models.Model):

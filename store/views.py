@@ -17,6 +17,7 @@ import random
 
 from . import models
 from . import serializers
+from .method import *
 # Create your views here.
 
 # Authentication
@@ -27,7 +28,7 @@ from . import serializers
 def shopUser(request):
     user = User.objects.get(username=request.user.username)
     try :
-        shop = models.ShopData.objects.get(user=user)
+        shop = models.ShopData.objects.filter(user=user)
         shopSerializer = serializers.ShopDataSerializer(shop, many=True)
         dataSerialized = shopSerializer.data
         data = []
@@ -38,15 +39,11 @@ def shopUser(request):
             item['shop_area'] = models.AreaData.objects.get(id=int(item['shop_area'])).area_name
             
             data.append(item)
-        
-        
-    except:
+              
+    except Exception as err:
+        print(err)
         data = None
-    
-    
-    
-    
-    
+
     return Response(
         {
             "status":True,
@@ -68,10 +65,10 @@ def shopRegister(request):
     message = ""
     
     # request data
-    product_type = request.data['shop_product_type']
+    shop_product_type = request.data['shop_product_type']
     shop_name = request.data['shop_name']
     shop_contact = f"{request.data['fname']} {request.data['lname']}"
-    shop_area = request.data['shop_area']
+    area = request.data['shop_area']
     shop_address = request.data['shop_address']
     shop_sub_district = request.data['shop_sub_district']
     shop_district = request.data['shop_district']
@@ -81,6 +78,11 @@ def shopRegister(request):
     shop_fax = request.data['shop_fax']
     shop_email = request.data['shop_email']
     shop_remark = request.data['shop_remark']
+    
+    product_type = models.ProductTypeData.objects.get(id=int(shop_product_type))
+    shop_area = models.AreaData.objects.get(id=int(area))
+    
+    
     
     try :
         if (models.ShopData.objects.filter(user=user).count() == 0):
@@ -100,8 +102,9 @@ def shopRegister(request):
                 shop_email=shop_email,
                 shop_remark=shop_remark,
             )
-            
+            print(ShopCode(shop_product_type, area, shop.id))
             if shop:
+                models.ShopData.objects.filter(id=shop.id).update(shop_code=ShopCode(shop_product_type, area, shop.id))
                 message = "success"
             else :
                 message = "fail"

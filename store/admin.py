@@ -12,6 +12,13 @@ class AreaDataAdmin(admin.ModelAdmin):
         'area_name'
     ]
     
+@admin.register(models.ShopData)
+class ShopDataAdmin(admin.ModelAdmin):
+    list_display = [
+        'user',
+        'shop_name'
+    ]
+    
 @admin.register(models.ProductTypeData)
 class ProductTypeDataAdmin(admin.ModelAdmin):
     list_display = [
