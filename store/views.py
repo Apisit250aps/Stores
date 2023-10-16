@@ -16,9 +16,44 @@ import json
 import random
 
 from . import models
+from . import serializers
 # Create your views here.
 
 # Authentication
+
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def shopUser(request):
+    user = User.objects.get(username=request.user.username)
+    try :
+        shop = models.ShopData.objects.get(user=user)
+        shopSerializer = serializers.ShopDataSerializer(shop, many=True)
+        dataSerialized = shopSerializer.data
+        data = []
+        for item in dataSerialized:
+            item = dict(item)
+            item['user'] = User.objects.get(id=int(item['user'])).username
+            item['product_type'] = models.ProductTypeData.objects.get(id=int(item['product_type'])).product_type
+            item['shop_area'] = models.AreaData.objects.get(id=int(item['shop_area'])).area_name
+            
+            data.append(item)
+        
+        
+    except:
+        data = None
+    
+    
+    
+    
+    
+    return Response(
+        {
+            "status":True,
+            "data":data,
+        }
+    )
+
 
 @csrf_exempt
 @api_view(["POST", ])
@@ -27,14 +62,15 @@ def shopRegister(request):
     # Auth
     user = User.objects.get(username=request.user.username)
     
+    
     # response
     status = True
     message = ""
     
     # request data
-    product_type = request.data['product_type']
+    product_type = request.data['shop_product_type']
     shop_name = request.data['shop_name']
-    shop_contact = request.data['shop_contact']
+    shop_contact = f"{request.data['fname']} {request.data['lname']}"
     shop_area = request.data['shop_area']
     shop_address = request.data['shop_address']
     shop_sub_district = request.data['shop_sub_district']
@@ -47,27 +83,32 @@ def shopRegister(request):
     shop_remark = request.data['shop_remark']
     
     try :
-        shop = models.ShopData.objects.create(
-            product_type=product_type,
-            shop_name=shop_name,
-            shop_contact=shop_contact,
-            shop_area=shop_area,
-            shop_address=shop_address,
-            shop_sub_district=shop_sub_district,
-            shop_district=shop_district,
-            shop_province=shop_province,
-            shop_zip=shop_zip,
-            shop_tel=shop_tel,
-            shop_fax=shop_fax,
-            shop_email=shop_email,
-            shop_remark=shop_remark,
-        )
-
-        if shop:
-            message = "success"
+        if (models.ShopData.objects.filter(user=user).count() == 0):
+            shop = models.ShopData.objects.create(
+                user=user,
+                product_type=product_type,
+                shop_name=shop_name,
+                shop_contact=shop_contact,
+                shop_area=shop_area,
+                shop_address=shop_address,
+                shop_sub_district=shop_sub_district,
+                shop_district=shop_district,
+                shop_province=shop_province,
+                shop_zip=shop_zip,
+                shop_tel=shop_tel,
+                shop_fax=shop_fax,
+                shop_email=shop_email,
+                shop_remark=shop_remark,
+            )
+            
+            if shop:
+                message = "success"
+            else :
+                message = "fail"
+                status = False
         else :
-            message = "fail"
             status = False
+            message = "You have a shop!"
 
     except Exception as err:
         status = False
@@ -80,3 +121,101 @@ def shopRegister(request):
             "message":message
         }
     )
+
+# General API Shop
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def getProductTypeData(request):
+    product_type = models.ProductTypeData.objects.all()
+    productTypeSerializer = serializers.ProductTypeDataSerializer(product_type, many=True)
+    data = productTypeSerializer.data
+    
+    return Response(
+        {
+            "status":True,
+            "data":data
+        }
+    )
+
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def getAreaData(request):
+    area = models.AreaData.objects.all()
+    areaSerializer = serializers.AreaDataSerializer(area, many=True)
+    data = areaSerializer.data
+    
+    return Response(
+        {
+            "status":True,
+            "data":data,
+        }
+    )
+
+
+
+
+
+
+
+
+
+
+# Address
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def getProvince(request):
+    data = {}
+    msg = 'already get thai province'
+    
+
+    # get thai province file
+    result = finders.find('data/json/thai_province.json')
+    with open(result, encoding='utf8') as f:
+        province = json.load(f)
+
+    data['province'] = province.keys()
+
+    return Response({'status': True, 'message': msg, 'data': data})
+
+
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def getDistrict(request):
+    data = {}
+    msg = 'already get thai district'
+    
+
+    # get thai province file
+    result = finders.find('data/json/thai_province.json')
+    with open(result, encoding='utf8') as f:
+        province = json.load(f)
+
+    province_selected = request.data['province']
+    data['district'] = province[province_selected].keys()
+
+    return Response({'status': True, 'message': msg, 'data': data})
+
+
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def getTambon(request):
+    data = {}
+    msg = 'already get thai tambon'
+    
+
+    # get thai province file
+    result = finders.find('data/json/thai_province.json')
+    with open(result, encoding='utf8') as f:
+        province = json.load(f)
+
+    province_selected = request.data['province']
+    district_selected = request.data['district']
+
+    data['tambon'] = province[province_selected][district_selected]
+
+    return Response({'status': True, 'message': msg, 'data': data})

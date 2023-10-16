@@ -1,26 +1,29 @@
-{% extends 'customer/base.html' %}
+{% extends 'customer/base.html' %} {% block content %}
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Account Settings /</span> Shop
+</h4>
+<div class="row">
+  <div class="col-md-12">
+    <ul class="nav nav-pills flex-column flex-md-row mb-3">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'account' %}"><i class="bx bx-user me-1"></i> Account</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-store me-1"></i>Shop</a>
+      </li>
+    </ul>
+    <div class="card mb-4">
+      <div class="card-header d-flex flex-row justify-content-between">
+        <h5 class="">Shop Details</h5>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter"
+          v-show="shop_user==null">
+          Create Shop
+        </button>
+      </div>
 
-{% block content %}
-  <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Shop</h4>
-  <div class="row">
-    <div class="col-md-12">
-      <ul class="nav nav-pills flex-column flex-md-row mb-3">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'account' %}"><i class="bx bx-user me-1"></i> Account</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-store me-1"></i>Shop</a>
-        </li>
-      </ul>
-      <div class="card mb-4">
-        <div class="card-header d-flex flex-row justify-content-between">
-          <h5 class="">Shop Details</h5>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">Launch modal</button>
-        </div>
-        
-        <!-- Account -->
-        <div class="card-body">
-          <!--  <div class="d-flex align-items-start align-items-sm-center gap-4">
+      <!-- Account -->
+      <div class="card-body">
+        <!--  <div class="d-flex align-items-start align-items-sm-center gap-4">
           <img src="../assets/img/avatars/1.png" alt="user-avatar" class="d-block rounded" height="100" width="100"
             id="uploadedAvatar" />
           <div class="button-wrapper">
@@ -37,270 +40,599 @@
             <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
           </div>
         </div>  -->
-        </div>
-        <hr class="my-0" />
-        <div class="card-body">
-          <div class="table-responsive text-nowrap">
-            <table class="table table-borderless">
-              <thead>
-                <tr>
-                  <th>Project</th>
-                  <th>Client</th>
-                  <th>Users</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Angular Project</strong>
-                  </td>
-                  <td>Albert Cook</td>
-                  <td>
-                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-primary me-1">Active</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <i class="fab fa-react fa-lg text-info me-3"></i> <strong>React Project</strong>
-                  </td>
-                  <td>Barry Hunter</td>
-                  <td>
-                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-success me-1">Completed</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <i class="fab fa-vuejs fa-lg text-success me-3"></i> <strong>VueJs Project</strong>
-                  </td>
-                  <td>Trevor Baker</td>
-                  <td>
-                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-info me-1">Scheduled</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <i class="fab fa-bootstrap fa-lg text-primary me-3"></i> <strong>Bootstrap Project</strong>
-                  </td>
-                  <td>Jerry Milton</td>
-                  <td>
-                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-warning me-1">Pending</span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- /Account -->
       </div>
-      <div class="card">
-        <h5 class="card-header">Delete Account</h5>
-        <div class="card-body">
-          <div class="mb-3 col-12 mb-0">
-            <div class="alert alert-warning">
-              <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
-              <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
-            </div>
-          </div>
-          <form id="formAccountDeactivation" onsubmit="return false">
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation" />
-              <label class="form-check-label" for="accountActivation">I confirm my account deactivation</label>
-            </div>
-            <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
-          </form>
+      <hr class="my-0" />
+      <div class="card-body">
+        <div class="table-responsive text-nowrap">
+          <table class="table table-borderless" style="height: 200px">
+            <thead class="">
+              <tr>
+                <th>Project</th>
+                <th>Client</th>
+                <th>Users</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="">
+              <tr>
+                <td>
+                  <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                  <strong>Angular Project</strong>
+                </td>
+                <td>Albert Cook</td>
+                <td>
+                  <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                      <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                      <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Christina Parker">
+                      <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <span class="badge bg-label-primary me-1">Active</span>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="fab fa-react fa-lg text-info me-3"></i>
+                  <strong>React Project</strong>
+                </td>
+                <td>Barry Hunter</td>
+                <td>
+                  <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                      <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                      <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Christina Parker">
+                      <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <span class="badge bg-label-success me-1">Completed</span>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="fab fa-vuejs fa-lg text-success me-3"></i>
+                  <strong>VueJs Project</strong>
+                </td>
+                <td>Trevor Baker</td>
+                <td>
+                  <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                      <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                      <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Christina Parker">
+                      <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <span class="badge bg-label-info me-1">Scheduled</span>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
+                  <strong>Bootstrap Project</strong>
+                </td>
+                <td>Jerry Milton</td>
+                <td>
+                  <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                      <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                      <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                      class="avatar avatar-xs pull-up" title="Christina Parker">
+                      <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <span class="badge bg-label-warning me-1">Pending</span>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
+      <!-- /Account -->
+    </div>
+    <div class="card">
+      <h5 class="card-header">Delete Account</h5>
+      <div class="card-body">
+        <div class="mb-3 col-12 mb-0">
+          <div class="alert alert-warning">
+            <h6 class="alert-heading fw-bold mb-1">
+              Are you sure you want to delete your account?
+            </h6>
+            <p class="mb-0">
+              Once you delete your account, there is no going back. Please be
+              certain.
+            </p>
+          </div>
+        </div>
+        <form id="formAccountDeactivation" onsubmit="return false">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation" />
+            <label class="form-check-label" for="accountActivation">I confirm my account deactivation</label>
+          </div>
+          <button type="submit" class="btn btn-danger deactivate-account">
+            Deactivate Account
+          </button>
+        </form>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Modal Content -->
+<!-- Modal Content -->
 
-  <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalCenterTitle">Create shop</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <hr />
-          <!-- contact -->
-          <div class="row row-cols-1 row-cols-lg-2 m-auto">
-            <div class="col mb-2">
-              <label for="fname" class="form-label">Name</label>
-              <input type="text" id="fname" class="form-control" placeholder="Enter Name" />
-            </div>
-            <div class="col mb-2">
-              <label for="lname" class="form-label">Last name</label>
-              <input type="text" id="lname" class="form-control" placeholder="Enter Last name" />
-            </div>
+<div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCenterTitle">Create shop</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <hr />
+        <!-- contact -->
+        <div class="row row-cols-1 row-cols-lg-2 m-auto">
+          <div class="col mb-2">
+            <label for="fname" class="form-label">Name</label>
+            <input type="text" id="fname" class="form-control" placeholder="Enter Name" v-model="fname" />
           </div>
-          <!-- shop -->
-          <div class="row row-cols-1 m-auto">
-            <div class="col mb-2">
-              <label for="sname" class="form-label">Shop name</label>
-              <input type="text" id="sname" class="form-control" placeholder="Enter Shop name" />
-            </div>
-            <div class="col mb-2">
-              <label for="product_type" class="form-label">Product Type</label>
-              <select name="" id="product_type" class="form-control">
-                <option value="">1</option>
-              </select>
-            </div>
-          </div>
-          <div class="row row-cols-1 m-auto">
-            <div class="col mb-2">
-              <label for="area" class="form-label">Area</label>
-              <select name="" id="area" class="form-control">
-                <option value="">1</option>
-              </select>
-            </div>
-          </div>
-          <!-- shop address -->
-          <div class="row row-cols-1 row-cols-lg-2 m-auto">
-            <div class="col mb-2">
-              <label for="province" class="form-label">Province</label>
-              <select name="" id="province" class="form-control">
-                <option value="">1</option>
-              </select>
-            </div>
-            <div class="col mb-2">
-              <label for="district" class="form-label">District</label>
-              <select name="" id="district" class="form-control">
-                <option value="">1</option>
-              </select>
-            </div>
-            <div class="col mb-2">
-              <label for="sub_district" class="form-label">Sub District</label>
-              <select name="" id="sub_district" class="form-control">
-                <option value="">1</option>
-              </select>
-            </div>
-            <div class="col mb-2">
-              <label for="zip" class="form-label">Zip code</label>
-              <input type="text" id="zip" class="form-control" placeholder="Enter Zip Code" />
-            </div>
-          </div>
-          <div class="row row-cols-1 m-auto">
-            <div class="col mb-2">
-              <label for="address" class="form-label">Address</label>
-              <textarea name="address" class="form-control" id="" cols="30" rows="3"></textarea>
-            </div>
-          </div>
-          <div class="row row-cols-1 row-cols-lg-2 m-auto">
-            <div class="col mb-2">
-              <label for="tel" class="form-label">Tel.</label>
-              <input type="tel" id="tel" class="form-control" placeholder="Phone number" />
-            </div>
-            <div class="col mb-2">
-              <label for="fax" class="form-label">Fax</label>
-              <input type="tel" id="fax" class="form-control" placeholder="Fax number" />
-            </div>
-            <div class="col mb-2">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" id="email" class="form-control" placeholder="Email" />
-            </div>
-            <div class="col mb-2">
-              <label for="remark" class="form-label">Remark</label>
-              <input type="text" id="remark" class="form-control" placeholder="Remark" />
-            </div>
+          <div class="col mb-2">
+            <label for="lname" class="form-label">Last name</label>
+            <input type="text" id="lname" class="form-control" placeholder="Enter Last name" v-model="lname" />
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+        <!-- shop -->
+        <div class="row row-cols-1 m-auto">
+          <div class="col mb-2">
+            <label for="sname" class="form-label">Shop name</label>
+            <input type="text" id="sname" class="form-control" placeholder="Enter Shop name" v-model="shop_name" />
+          </div>
+          <div class="col mb-2">
+            <label for="product_type" class="form-label">Product Type</label>
+            <select name="" id="product_type" class="form-control" v-model="shop_product_type">
+              <option v-for="(item, index) in product_type_list" :key="index" :value="item.id">[{item.product_type}]</option>
+            </select>
+          </div>
         </div>
+        <div class="row row-cols-1 m-auto">
+          <div class="col mb-2">
+            <label for="area" class="form-label">Area</label>
+            <select name="" id="area" class="form-control" v-model="shop_area">
+              <option v-for="(item, index) in area_list" :key="index" :value="item.id">[{item.area_code}] [{item.area_name}]</option>
+            </select>
+          </div>
+        </div>
+        <!-- shop address -->
+        <div class="row row-cols-1 row-cols-lg-2 m-auto">
+          <div class="col mb-2">
+            <label for="province" class="form-label">Province</label>
+            <select id="province" class="form-control" v-model="shop_province" @change="onProvinceChange()">
+              <option v-for="item in province_list" :value="item">[{item}]</option>
+            </select>
+          </div>
+          <div class="col mb-2">
+            <label for="district" class="form-label">District</label>
+            <select id="district" class="form-control" v-model="shop_district" @change="onDistrictChange()">
+              <option v-for="item in district_list" :value="item">[{item}]</option>
+            </select>
+          </div>
+          <div class="col mb-2">
+            <label for="sub_district" class="form-label">Sub District</label>
+            <select id="sub_district" class="form-control" v-model="shop_sub_district">
+              <option v-for="item in sub_district_list" :value="item">[{item}]</option>
+            </select>
+          </div>
+          <div class="col mb-2">
+            <label for="zip" class="form-label">Zip code</label>
+            <input type="text" id="zip" class="form-control" placeholder="Enter Zip Code" v-model="shop_zip" />
+          </div>
+        </div>
+        <div class="row row-cols-1 m-auto">
+          <div class="col mb-2">
+            <label for="address" class="form-label">Address</label>
+            <textarea name="address" class="form-control" id="" cols="30" rows="3" v-model="shop_address"></textarea>
+          </div>
+        </div>
+        <div class="row row-cols-1 row-cols-lg-2 m-auto">
+          <div class="col mb-2">
+            <label for="tel" class="form-label">Tel.</label>
+            <input type="tel" id="tel" class="form-control" placeholder="Phone number" v-model="shop_tel" />
+          </div>
+          <div class="col mb-2">
+            <label for="fax" class="form-label">Fax</label>
+            <input type="tel" id="fax" class="form-control" placeholder="Fax number" v-model="shop_fax" />
+          </div>
+          <div class="col mb-2">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" placeholder="Email" v-model="shop_email" />
+          </div>
+          <div class="col mb-2">
+            <label for="remark" class="form-label">Remark</label>
+            <input type="text" id="remark" class="form-control" placeholder="Remark" v-model="shop_remark" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
-{% endblock %}
+</div>
+{% endblock %} {% block script %}
+<script>
+  const { createApp } = Vue;
+  const App = createApp({
+    delimiters: ["[{", "}]"],
+    data() {
+      return {
+        fname: "",
+        fname_isValid: true,
+
+        lname: "",
+        lname_isValid: true,
+
+        shop_name: "",
+        shop_name_isValid: true,
+
+        shop_area: "",
+        shop_area_isValid: true,
+
+        shop_address: "",
+        shop_address_isValid: true,
+
+        shop_sub_district: "",
+        shop_sub_district_isValid: true,
+
+        shop_district: "",
+        shop_district_isValid: true,
+
+        shop_province: "",
+        shop_province_isValid: true,
+
+        shop_zip: "",
+        shop_zip_isValid: true,
+
+        shop_tel: "",
+        shop_tel_isValid: true,
+
+        shop_fax: "",
+        shop_fax_isValid: true,
+
+        shop_email: "",
+        shop_email_isValid: true,
+
+        shop_remark: "",
+        shop_remark_isValid: true,
+
+        shop_product_type: "",
+        shop_product_type_isValid: true,
+
+        isValid: true,
+
+        shop_user: null,
+
+
+        province_list: null,
+        district_list: null,
+        sub_district_list: null,
+
+        area_list:null,
+        product_type_list:null,
+
+
+
+
+      };
+    },
+    mounted() {
+      axios(
+        {
+          method: "get",
+          url: "{% url 'shop-user-api' %}",
+        }
+      )
+        .then((response) => {
+          if (response.data['status']) {
+            this.shop_user = response.data['data']
+          }
+        })
+
+
+
+      axios(
+        {
+          method: 'get',
+          url: "{% url 'get-province-api' %}"
+        }
+      )
+        .then((response) => {
+          if (response.data['status']) {
+            this.province_list = response.data['data']['province']
+          }
+        })
+
+
+      axios(
+        {
+          method:"get",
+          url:"{% url 'get-area-api' %}"
+        }
+      )
+      .then((response)=>{
+        if (response.data['status']){
+          this.area_list = response.data['data']
+        }
+      })
+
+      axios(
+        {
+          method:"get",
+          url:"{% url 'get-product-type-api' %}"
+        }
+      )
+      .then((response)=>{
+        if (response.data['status']){
+          this.product_type_list = response.data['data']
+        }
+      })
+    },
+    methods: {
+      onProvinceChange() {
+        const form_data = new FormData
+        form_data.append('csrfmiddlewaretoken', "{{csrf_token}}")
+        form_data.append('province', this.shop_province)
+
+        axios(
+          {
+            method: "post",
+            url: "{% url 'get-district-api' %}",
+            data: form_data
+          }
+        )
+          .then((response) => {
+            if (response.data['status']) {
+              this.district_list = response.data['data']['district']
+              this.sub_district_list = null
+              this.shop_district = ''
+              this.shop_sub_district = ''
+            }
+          })
+      },
+      onDistrictChange() {
+        const form_data = new FormData
+        form_data.append('csrfmiddlewaretoken', "{{csrf_token}}")
+        form_data.append('province', this.shop_province)
+        form_data.append('district', this.shop_district)
+
+        axios(
+          {
+            method: "post",
+            url: "{% url 'get-tambon-api' %}",
+            data: form_data
+          }
+        )
+          .then((response) => {
+            if (response.data['status']) {
+              this.sub_district_list = response.data['data']['tambon']
+            }
+          })
+      },
+      onSubmit(e) {
+        e.preventDefault();
+
+        this.isValid = true;
+
+        this.fname_isValid = true;
+        if (this.fname == "") {
+          this.fname_isValid = false;
+          this.isValid = true;
+        }
+
+        this.lname_isValid = true;
+        if (this.lname == "") {
+          this.lname_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_name_isValid = true;
+        if (this.shop_name == "") {
+          this.shop_name_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_area_isValid = true;
+        if (this.shop_area == "") {
+          this.shop_area_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_address_isValid = true;
+        if (this.shop_address == "") {
+          this.shop_address_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_sub_district_isValid = true;
+        if (this.shop_sub_district == "") {
+          this.shop_sub_district_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_district_isValid = true;
+        if (this.shop_district == "") {
+          this.shop_district_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_province_isValid = true;
+        if (this.shop_province == "") {
+          this.shop_province_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_zip_isValid = true;
+        if (this.shop_zip == "") {
+          this.shop_zip_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_tel_isValid = true;
+        if (this.shop_tel == "") {
+          this.shop_tel_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_fax_isValid = true;
+        if (this.shop_fax == "") {
+          this.shop_fax_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_email_isValid = true;
+        if (this.shop_email == "") {
+          this.shop_email_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_remark_isValid = true;
+        if (this.shop_remark == "") {
+          this.shop_remark_isValid = false;
+          this.isValid = true;
+        }
+
+        this.shop_product_type_isValid = true;
+        if (this.shop_product_type == "") {
+          this.shop_product_type_isValid = false;
+          this.isValid = false;
+        }
+
+        if (this.isValid) {
+          const form_data = new FormData;
+
+          form_data.append("fname", this.fname);
+          form_data.append("lname", this.lname);
+          form_data.append("shop_name", this.shop_name);
+          form_data.append("shop_area", this.shop_area);
+          form_data.append("shop_address", this.shop_address);
+          form_data.append("shop_sub_district", this.shop_sub_district);
+          form_data.append("shop_district", this.shop_district);
+          form_data.append("shop_province", this.shop_province);
+          form_data.append("shop_zip", this.shop_zip);
+          form_data.append("shop_tel", this.shop_tel);
+          form_data.append("shop_fax", this.shop_fax);
+          form_data.append("shop_email", this.shop_email);
+          form_data.append("shop_remark", this.shop_remark);
+          form_data.append("shop_product_type", this.shop_product_type);
+
+          axios(
+            {
+              method: "post",
+              url: "{% url 'shop-create-api' %}",
+              data: form_data
+            }
+          )
+            .then((response) => {
+              if (request.data['status']) {
+                Swal.fire(
+                  'Successfully!',
+                  response.data['message'],
+                  'success'
+                )
+              }
+              else {
+                Swal.fire(
+                  'Error!',
+                  response.data['message'],
+                  'error'
+                )
+              }
+            })
+
+        }
+      },
+    },
+  });
+  App.mount("#app");
+</script>
+{% endblock script %}

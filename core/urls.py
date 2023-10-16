@@ -17,9 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from store import views as store
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('', include('pages.urls')),
-    path('api/cus/', include('customer.urls')),
+    path('api/customer/', include('customer.urls')),
+    path('api/store/', include('store.urls')),
+    
+    # address from 
+    path('get/province', store.getProvince, name='get-province-api'),
+    path('get/district', store.getDistrict, name='get-district-api'),
+    path('get/tambon', store.getTambon, name='get-tambon-api'),
 ]
