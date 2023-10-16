@@ -7,14 +7,10 @@
   <div class="col-md-12">
     <ul class="nav nav-pills flex-column flex-md-row mb-3">
       <li class="nav-item">
-        <a class="nav-link active" href="javascript:void(0);"
-          ><i class="bx bx-user me-1"></i> Account</a
-        >
+        <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'shop' %}"
-          ><i class="bx bx-store me-1"></i>Shop</a
-        >
+        <a class="nav-link" href="{% url 'shop' %}"><i class="bx bx-store me-1"></i>Shop</a>
       </li>
     </ul>
     <div class="card mb-4">
@@ -48,79 +44,36 @@
           <div class="row row-cols-1 row-cols-lg-2">
             <div class="col mb-2">
               <label for="fname" class="form-label">First name</label>
-              <input
-                type="text"
-                name=""
-                id="fname"
-                class="form-control"
-                v-model="customer_data.fname"
-              />
+              <input type="text" name="" id="fname" class="form-control" v-model="customer_data.fname" />
             </div>
             <div class="col mb-2">
               <label for="lname" class="form-label">Last name</label>
-              <input
-                type="text"
-                name=""
-                id="lname"
-                class="form-control"
-                v-model="customer_data.lname"
-              />
+              <input type="text" name="" id="lname" class="form-control" v-model="customer_data.lname" />
             </div>
           </div>
           <div class="row row-cols-1 row-cols-lg-2">
             <div class="col mb-2">
               <label for="tel" class="form-label">Tel.</label>
-              <input
-                type="tel"
-                id="tel"
-                class="form-control"
-                placeholder="Phone number"
-                v-model="customer_data.tel"
-              />
+              <input type="tel" id="tel" class="form-control" placeholder="Phone number" v-model="customer_data.tel" />
             </div>
             <div class="col mb-2">
               <label for="fax" class="form-label">Fax</label>
-              <input
-                type="tel"
-                id="fax"
-                class="form-control"
-                placeholder="Fax number"
-                v-model="customer_data.fax"
-              />
+              <input type="tel" id="fax" class="form-control" placeholder="Fax number" v-model="customer_data.fax" />
             </div>
             <div class="col mb-2">
               <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                id="email"
-                class="form-control"
-                placeholder="Email"
-                v-model="customer_data.email"
-              />
+              <input type="email" id="email" class="form-control" placeholder="Email" v-model="customer_data.email" />
             </div>
             <div class="col mb-2">
               <label for="remark" class="form-label">Remark</label>
-              <input
-                type="text"
-                id="remark"
-                class="form-control"
-                placeholder="Remark"
-                v-model="customer_data.remark"
-              />
+              <input type="text" id="remark" class="form-control" placeholder="Remark" v-model="customer_data.remark" />
             </div>
           </div>
           <div class="row row-cols-1 row-cols-lg-2">
             <div class="col mb-2">
               <label for="province" class="form-label">Province</label>
-              <input
-                type="text"
-                id="province"
-                class="form-control"
-                placeholder="Remark"
-                v-model="customer_data.province"
-                list="provinces"
-                @change="onProvinceChange()"
-              />
+              <input type="text" id="province" class="form-control" placeholder="Remark"
+                v-model="customer_data.province" list="provinces" @change="onProvinceChange()" />
               <datalist id="provinces">
                 <option v-for="item in province_list" :value="item">
                   [{item}]
@@ -129,15 +82,8 @@
             </div>
             <div class="col mb-2">
               <label for="district" class="form-label">District</label>
-              <input
-                type="text"
-                id="district"
-                class="form-control"
-                placeholder="Remark"
-                v-model="customer_data.district"
-                list="districts"
-                @change="onDistrictChange()"
-              />
+              <input type="text" id="district" class="form-control" placeholder="Remark"
+                v-model="customer_data.district" list="districts" @change="onDistrictChange()" />
               <datalist id="districts">
                 <option v-for="item in district_list" :value="item">
                   [{item}]
@@ -146,14 +92,8 @@
             </div>
             <div class="col mb-2">
               <label for="sub_district" class="form-label">Sub District</label>
-              <input
-                type="text"
-                id="sub_district"
-                class="form-control"
-                placeholder="Remark"
-                v-model="customer_data.sub_district"
-                list="sub_districts"
-              />
+              <input type="text" id="sub_district" class="form-control" placeholder="Remark"
+                v-model="customer_data.sub_district" list="sub_districts" />
               <datalist id="sub_districts">
                 <option v-for="item in sub_district_list" :value="item">
                   [{item}]
@@ -162,43 +102,22 @@
             </div>
             <div class="col mb-2">
               <label for="zip" class="form-label">Zip code</label>
-              <input
-                type="text"
-                id="zip"
-                class="form-control"
-                placeholder="Enter Zip Code"
-                v-model="customer_data.zip"
-              />
+              <input type="text" id="zip" class="form-control" placeholder="Enter Zip Code"
+                v-model="customer_data.zip" />
             </div>
           </div>
           <div class="row row-cols-1">
             <div class="col mb-2">
               <label for="address" class="form-label">Address</label>
-              <textarea
-                name="address"
-                class="form-control"
-                id="address"
-                cols="30"
-                rows="3"
-                v-model="customer_data.address"
-              ></textarea>
+              <textarea name="address" class="form-control" id="address" cols="30" rows="3"
+                v-model="customer_data.address"></textarea>
             </div>
           </div>
           <div class="mt-2">
-            <button
-              v-show="onEdit"
-              @click="onSubmit($event)"
-              type="submit"
-              class="btn btn-primary me-2"
-            >
+            <button v-show="onEdit" @click="onSubmit($event)" type="submit" class="btn btn-primary me-2">
               Save changes
             </button>
-            <button
-              v-show="!onEdit"
-              @click="setEdit()"
-              type="button"
-              class="btn btn-primary me-2"
-            >
+            <button v-show="!onEdit" @click="setEdit()" type="button" class="btn btn-primary me-2">
               Edit
             </button>
           </div>
@@ -316,7 +235,7 @@
             }
           }
         })
-        .catch((err) => {});
+        .catch((err) => { });
 
       document.getElementById("fname").disabled = true;
       document.getElementById("lname").disabled = true;
@@ -331,7 +250,7 @@
       document.getElementById("address").disabled = true;
     },
     computed: {
-      formDisable() {},
+      formDisable() { },
     },
     methods: {
       onProvinceChange() {
