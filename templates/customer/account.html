@@ -119,9 +119,12 @@
                 placeholder="Remark"
                 v-model="customer_data.province"
                 list="provinces"
+                @change="onProvinceChange()"
               />
               <datalist id="provinces">
-                <option value="asdd">asdd</option>
+                <option v-for="item in province_list" :value="item">
+                  [{item}]
+                </option>
               </datalist>
             </div>
             <div class="col mb-2">
@@ -133,9 +136,12 @@
                 placeholder="Remark"
                 v-model="customer_data.district"
                 list="districts"
+                @change="onDistrictChange()"
               />
               <datalist id="districts">
-                <option value="asdd">asdd</option>
+                <option v-for="item in district_list" :value="item">
+                  [{item}]
+                </option>
               </datalist>
             </div>
             <div class="col mb-2">
@@ -149,7 +155,9 @@
                 list="sub_districts"
               />
               <datalist id="sub_districts">
-                <option value="asdd">asdd</option>
+                <option v-for="item in sub_district_list" :value="item">
+                  [{item}]
+                </option>
               </datalist>
             </div>
             <div class="col mb-2">
@@ -249,9 +257,22 @@
 
         isValid: true,
         onEdit: false,
+
+        province_list: null,
+        district_list: null,
+        sub_district_list: null,
       };
     },
     mounted() {
+      axios({
+        method: "get",
+        url: "{% url 'get-province-api' %}",
+      }).then((response) => {
+        if (response.data["status"]) {
+          this.province_list = response.data["data"]["province"];
+        }
+      });
+
       axios({
         method: "get",
         url: "{% url 'customer-user-api' %}",
@@ -313,6 +334,41 @@
       formDisable() {},
     },
     methods: {
+      onProvinceChange() {
+        const form_data = new FormData();
+        form_data.append("csrfmiddlewaretoken", "{{csrf_token}}");
+        form_data.append("province", this.customer_data.province);
+
+        axios({
+          method: "post",
+          url: "{% url 'get-district-api' %}",
+          data: form_data,
+        }).then((response) => {
+          if (response.data["status"]) {
+            this.district_list = response.data["data"]["district"];
+            this.sub_district_list = null;
+            this.customer_data.district = "";
+            this.customer_data.sub_district = "";
+          }
+        });
+      },
+      onDistrictChange() {
+        const form_data = new FormData();
+        form_data.append("csrfmiddlewaretoken", "{{csrf_token}}");
+        form_data.append("province", this.customer_data.province);
+        form_data.append("district", this.customer_data.district);
+
+        axios({
+          method: "post",
+          url: "{% url 'get-tambon-api' %}",
+          data: form_data,
+        }).then((response) => {
+          if (response.data["status"]) {
+            this.sub_district_list = response.data["data"]["tambon"];
+          }
+        });
+      },
+
       setEdit() {
         this.onEdit = true;
         document.getElementById("fname").disabled = false;
