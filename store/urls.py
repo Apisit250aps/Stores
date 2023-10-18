@@ -20,6 +20,10 @@ urlpatterns = [
     path('create/input-data', api.createInputData, name='create-input-data-api'),
     path('get/input-invoice', api.getInputData, name='get-input-invoice-api'),
 
+
+    # products 
+    path('product/all', api.allProduct, name='product-all-api'),
+    
     # address
 
 

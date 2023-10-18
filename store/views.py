@@ -289,7 +289,25 @@ def getInputData(request):
 
 
 
-
+# Product API
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def allProduct(request):
+    products = models.ProductData.objects.all().order_by('product_category')
+    productSerializer = serializers.ProductDataSerializer(products, many=True)
+    data = []
+    for item in productSerializer.data:
+        item = dict(item)
+        item['product_category'] = models.ProductCategory.objects.get(id=int(item['product_category'])).product_category
+        data.append(item)
+    
+    return Response(
+        {
+            "status":True,
+            "data":data
+        }
+    )
 
 # Address
 @csrf_exempt

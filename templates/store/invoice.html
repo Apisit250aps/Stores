@@ -1,70 +1,63 @@
 {% extends "store/base.html" %}
-
+<!--  -->
 {% block content %}
-<div class="row row-cols-1 m-auto g-2">
-    <div v-for="(item, index) in invoices" :key="index" class="col">
-        <div class="accordion-item card">
-            <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionIconOne">
-                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#index" aria-controls="index">
-                    Invoice No. [{item.invoice_no}]
-                </button>
-            </h2>
-
-            <div id="index" class="accordion-collapse collapse" data-bs-parent="#accordionIcon">
-                <div class="accordion-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Unit</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(data, index) in item.input_data" :key="index">
-                                <td>[{data.product.product_name}]</td>
-                                <td>[{data.quantity}]</td>
-                                <td>[{data.product.product_price}]</td>
-                            </tr>
-                        </tbody>
-
-                    </table>
+<div class="row">
+    <div class="col">
+        <small class="text-light fw-semibold">Basic Accordion</small>
+        <div class="accordion mt-3" id="accordionExample">
+            <div class="card accordion-item" v-for="(item, index) in invoices" :key="index">
+                <h2 class="accordion-header" id="headingOne">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                        :data-bs-target="`#accordionOne-${index}`" aria-expanded="true" :aria-controls="`accordionOne-${index}`">
+                        <b>INVOICE NO. [{item.invoice_no}]</b>
+                    </button>
+                </h2>
+                <div :id="`accordionOne-${index}`" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class=" table table-borderless table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product Name</th>
+                                    <th>Unit</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(items, indexs) in item.input_data" :key="indexs">
+                                    <td>[{indexs+1}]</td>
+                                    <td>[{items.product.product_name}]</td>
+                                    <td>[{items.quantity}]</td>
+                                    <td>[{items.unit_price}]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-{% endblock content %}
-
-
-{% block script %}
+{% endblock content %} {% block script %}
 <script>
     const { createApp } = Vue;
-    const App = createApp(
-        {
-            delimiters: ["[{", "}]"],
-            data() {
-                return {
-                    invoices: null,
-
-                }
-            },
-            mounted() {
-                axios(
-                    {
-                        method: "get",
-                        url: "{% url 'get-input-invoice-api' %}"
-                    }
-                )
-
-                    .then((response) => {
-                        this.invoices = response.data['data']
-                    })
-            }
-        }
-    );
-    App.mount("#app")
+    const App = createApp({
+        delimiters: ["[{", "}]"],
+        data() {
+            return {
+                invoices: null,
+            };
+        },
+        mounted() {
+            axios({
+                method: "get",
+                url: "{% url 'get-input-invoice-api' %}",
+            }).then((response) => {
+                this.invoices = response.data["data"];
+            });
+        },
+    });
+    App.mount("#app");
 </script>
 {% endblock script %}
