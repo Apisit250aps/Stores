@@ -32,4 +32,12 @@ urlpatterns = [
     # auth
     path('login', views.login, name='login'),
     path('register', views.register, name='register'),
+    
+    
+    # store
+    path('store/products', views.Product, name='products'),
+    path('store/add-product', views.addProduct, name='add-product'),
+    path('store/invoice', views.invoice, name='invoice'),
+    
+    
 ]

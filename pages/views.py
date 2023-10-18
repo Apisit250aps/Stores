@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-
+# Customer
 @login_required
 def index(request):
 
@@ -32,6 +32,23 @@ def cart(request):
 def order(request):
 
     return render(request, 'customer/order.html')
+
+
+
+
+# Store
+def Product(request):
+    
+    return render(request, 'store/products.html')
+
+def addProduct(request):
+    
+    return render(request, 'store/add-product.html')
+
+
+def invoice(request):
+    
+    return render(request, 'store/invoice.html')
 
 # Auth
 

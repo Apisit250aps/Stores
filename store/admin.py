@@ -33,3 +33,23 @@ class ProductCategoryAdmin(admin.ModelAdmin):
         'product_type',
     ]
     
+@admin.register(models.ProductData)
+class ProductDataAdmin(admin.ModelAdmin):
+    list_display = [
+        'product_name',
+        
+    ]
+    
+@admin.register(models.InputInvoice)
+class InputInvoiceAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        
+    ]
+
+@admin.register(models.InputData)
+class InputDataAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        
+    ]

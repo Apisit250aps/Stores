@@ -1,0 +1,70 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<div class="row row-cols-1 m-auto g-2">
+    <div v-for="(item, index) in invoices" :key="index" class="col">
+        <div class="accordion-item card">
+            <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionIconOne">
+                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
+                    data-bs-target="#index" aria-controls="index">
+                    Invoice No. [{item.invoice_no}]
+                </button>
+            </h2>
+
+            <div id="index" class="accordion-collapse collapse" data-bs-parent="#accordionIcon">
+                <div class="accordion-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Unit</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data, index) in item.input_data" :key="index">
+                                <td>[{data.product.product_name}]</td>
+                                <td>[{data.quantity}]</td>
+                                <td>[{data.product.product_price}]</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    const { createApp } = Vue;
+    const App = createApp(
+        {
+            delimiters: ["[{", "}]"],
+            data() {
+                return {
+                    invoices: null,
+
+                }
+            },
+            mounted() {
+                axios(
+                    {
+                        method: "get",
+                        url: "{% url 'get-input-invoice-api' %}"
+                    }
+                )
+
+                    .then((response) => {
+                        this.invoices = response.data['data']
+                    })
+            }
+        }
+    );
+    App.mount("#app")
+</script>
+{% endblock script %}

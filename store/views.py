@@ -82,8 +82,6 @@ def shopRegister(request):
     product_type = models.ProductTypeData.objects.get(id=int(shop_product_type))
     shop_area = models.AreaData.objects.get(id=int(area))
     
-    
-    
     try :
         if (models.ShopData.objects.filter(user=user).count() == 0):
             shop = models.ShopData.objects.create(
@@ -157,9 +155,137 @@ def getAreaData(request):
     )
 
 
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def getProductCategory(request):
+    user = User.objects.get(username=request.user.username)
+    shop = models.ShopData.objects.get(user=user)
+    product_type = models.ProductTypeData.objects.get(id=shop.product_type.id)
+    product_cats = models.ProductCategory.objects.filter(product_type=product_type)
+    
+    product_catsSerializer = serializers.ProductCategorySerializer(product_cats, many=True)
+    data = product_catsSerializer.data
+    return Response(
+        {
+            "status":True,
+            "data":data
+        }
+    )
+
+
+# InputData
+
+@require_POST
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def createInputData(request):
+
+    status = True
+    user = User.objects.get(username=request.user.username)
+    shop = models.ShopData.objects.get(user=user)
+    shop_product_types = shop.product_type.id
+
+    obj_string = request.data['products']  # product list
+    remark = request.data['remark']  # remark
+    total_cost = request.data['total_cost']  # total cost
+    total_price = request.data['total_price']  # total price
+    total_discount = request.data['total_discount']  # total discount
+    total = request.data['total']  # total values
+
+    object_product = json.loads(obj_string)
+
+    try:
+
+        invoice = models.InputInvoice.objects.create(
+            # invoice_no=invoiceCode(),
+            shop=shop,
+            total_cost=total_cost,
+            total_price=total,
+            discount=total_discount,
+            remark=remark
+        )
+        
+        models.InputInvoice.objects.filter(id=invoice.id).update(invoice_no=InvoiceNo(shop_code=shop.shop_code, invoice_id=invoice.id))
+
+        for products in object_product.values():
+            # product_code = productCode()
+            product_name = products['product_name']
+            product_desc = products['product_desc']
+            product_price = products['price']
+            product_unit = products['unit']
+            product_cost = products['cost']
+            product_category = ProductCategory(
+                products['product_category'],
+                shop_product_types
+            )
+
+            product = models.ProductData.objects.create(
+                # product_code=product_code,
+                product_name=product_name,
+                product_desc=product_desc,
+                product_price=product_price,
+                # product_cost=product_cost,
+                product_category=product_category,
+            )
+            
+            models.ProductData.objects.filter(id=product.id).update(product_code=ProductCode(shop_id=shop.id, product_id=product.id))
+            
+            models.InputData.objects.create(
+                invoice=invoice,
+                product=product,
+                quantity=product_unit,
+                unit_price=product_price,
+                unit_cost=product_cost,
+                discount=products['discount']
+            )
+            
+            status = True
+
+    except Exception as err:
+        print(err)
+        # models.InputInvoice.objects.filter(id=invoice.id).delete()
+        status = False
+
+    return Response({
+        "status": status
+    })
 
 
 
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def getInputData(request):
+    user = User.objects.get(username=request.user.username)
+    shop = models.ShopData.objects.get(user=user)
+    input_invoice = models.InputInvoice.objects.filter(shop=shop)
+    
+    data = []
+    
+    invoice = serializers.InputInvoiceSerializer(input_invoice, many=True).data
+    for inv in invoice:
+        inv = dict(inv)
+        data_input_filter = models.InputData.objects.filter(invoice=inv['id'])
+        data_input_serializer = serializers.InputDataSerializer(data_input_filter, many=True).data
+        input_data = []
+        for item in data_input_serializer:
+            item = dict(item)
+            item['product'] = serializers.ProductDataSerializer(models.ProductData.objects.get(id=item['product'])).data
+            input_data.append(item)
+            
+        inv['input_data'] = input_data
+        
+        data.append(inv)
+        
+    
+    return Response(
+        {
+            "status":True,
+            "data":data
+        }
+    )
 
 
 

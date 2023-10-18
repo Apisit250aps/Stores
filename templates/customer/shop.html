@@ -60,9 +60,13 @@
                 <td>[{item.shop_code}]</td>
                 <td>[{item.shop_name}]</td>
                 <td>[{item.shop_contact}]</td>
-                <td>[{item.product_type}]</td>
                 <td>
-                  <a href="" class="btn btn-secondary">Manage</a>
+                  <span class="badge bg-label-primary me-1">
+                    [{item.product_type}]
+                  </span>
+                </td>
+                <td>
+                  <a href="{% url 'products' %}" class="btn btn-secondary">Manage</a>
                 </td>
               </tr>
             </tbody>
