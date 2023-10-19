@@ -39,7 +39,7 @@ def shopUser(request):
             item['shop_area'] = models.AreaData.objects.get(id=int(item['shop_area'])).area_name
             
             data.append(item)
-              
+            
     except Exception as err:
         print(err)
         data = None
@@ -58,7 +58,6 @@ def shopUser(request):
 def shopRegister(request):
     # Auth
     user = User.objects.get(username=request.user.username)
-    
     
     # response
     status = True
@@ -165,7 +164,10 @@ def getProductCategory(request):
     product_cats = models.ProductCategory.objects.filter(product_type=product_type)
     
     product_catsSerializer = serializers.ProductCategorySerializer(product_cats, many=True)
-    data = product_catsSerializer.data
+    data = []
+    for item in product_catsSerializer.data:
+        item = dict(item)
+        data.append(item['product_category'])
     return Response(
         {
             "status":True,
@@ -223,6 +225,7 @@ def createInputData(request):
 
             product = models.ProductData.objects.create(
                 # product_code=product_code,
+                shop=shop,
                 product_name=product_name,
                 product_desc=product_desc,
                 product_price=product_price,
@@ -306,6 +309,29 @@ def allProduct(request):
         {
             "status":True,
             "data":data
+        }
+    )
+
+@csrf_exempt
+@api_view(["GET", ])
+@permission_classes((AllowAny,))
+def shopProduct(request):
+    user = User.objects.get(username=request.user.username)
+    shop = models.ShopData.objects.get(user=user)
+    
+    product = models.ProductData.objects.filter(shop=shop)
+    productSerializer = serializers.ProductDataSerializer(product, many=True)
+    data = []
+    for item in productSerializer.data:
+        item = dict(item)
+        item['product_category'] = models.ProductCategory.objects.get(id=int(item['product_category'])).product_category
+        data.append(item)
+    
+    return Response(
+        {
+            "status":True,
+            "data":data
+            
         }
     )
 

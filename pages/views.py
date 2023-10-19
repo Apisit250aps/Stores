@@ -37,15 +37,17 @@ def order(request):
 
 
 # Store
+@login_required
 def Product(request):
     
     return render(request, 'store/products.html')
 
+@login_required
 def addProduct(request):
     
     return render(request, 'store/add-product.html')
 
-
+@login_required
 def invoice(request):
     
     return render(request, 'store/invoice.html')

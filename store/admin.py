@@ -16,7 +16,8 @@ class AreaDataAdmin(admin.ModelAdmin):
 class ShopDataAdmin(admin.ModelAdmin):
     list_display = [
         'user',
-        'shop_name'
+        'shop_code',
+        'shop_name',
     ]
     
 @admin.register(models.ProductTypeData)
@@ -37,13 +38,13 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 class ProductDataAdmin(admin.ModelAdmin):
     list_display = [
         'product_name',
-        
     ]
-    
+
 @admin.register(models.InputInvoice)
 class InputInvoiceAdmin(admin.ModelAdmin):
     list_display = [
         'id',
+        'invoice_no',
         
     ]
 
@@ -51,5 +52,5 @@ class InputInvoiceAdmin(admin.ModelAdmin):
 class InputDataAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-        
+        'invoice'
     ]

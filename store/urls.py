@@ -21,9 +21,10 @@ urlpatterns = [
     path('get/input-invoice', api.getInputData, name='get-input-invoice-api'),
 
 
-    # products 
+    # products
     path('product/all', api.allProduct, name='product-all-api'),
-    
+    path('product/shop', api.shopProduct, name='product-shop-api'),
+
     # address
 
 

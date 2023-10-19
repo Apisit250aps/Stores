@@ -180,7 +180,6 @@ def editCustomer(request):
 
     customer_contact = customer_fname+" "+customer_lname
     
-
     try:
         customer = models.CustomerData.objects.filter(user=user).update(
             customer_contact=customer_contact,
