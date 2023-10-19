@@ -294,7 +294,7 @@ def getInputData(request):
 @api_view(["GET", ])
 @permission_classes((AllowAny,))
 def allProduct(request):
-    products = models.ProductData.objects.all().order_by('product_category')
+    products = models.ProductData.objects.all().order_by('product_category', 'product_name')
     productSerializer = serializers.ProductDataSerializer(products, many=True)
     data = []
     for item in productSerializer.data:
