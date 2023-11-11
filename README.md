@@ -145,6 +145,7 @@ erDiagram
 
     User ||--|{ ShopData : "One to Many"
     ShopData ||--|{ InputInvoice : "One to Many"
+    ShopData ||--|{ ProductData : "One to Many"
     InputInvoice ||--|{ InputData : "One to Many"
     ProductData ||--|| InputData : "One to One"
 
@@ -177,6 +178,7 @@ erDiagram
 - ProductTypeData มีความสัมพันธ์แบบ One to One กับ ShopData หมายความว่า 1 ร้านค้าสามารถขายสินค้าได้เพียง 1 ประเภทสินค้าเท่านั้น
 - User มีความสัมพันธ์แบบ One to Many กับ ShopData หมายความว่า 1 ผู้ใช้สามารถมีหลายร้านค้า
 - ShopData มีความสัมพันธ์แบบ One to Many กับ InputInvoice หมายความว่า 1 ร้านค้าสามารถมีหลายใบสั่งซื้อขาเข้า
+- ShopData มีความสัมพันธ์แบบ One to Many กับ ProductData หมายความว่า 1 ร้านค้าสามารถมีหลายสิาค้า
 - InputInvoice มีความสัมพันธ์แบบ One to Many กับ InputData หมายความว่า 1 ใบสั่งซื้อขาเข้าสามารถมีหลายรายการสินค้า
 - ProductData มีความสัมพันธ์แบบ One to One กับ InputData หมายความว่า 1 รายการสินค้าในใบสั่งซื้อขาเข้าสามารถมีได้เพียง 1 สินค้าเท่านั้น
 - User มีความสัมพันธ์แบบ One to One กับ CustomerData หมายความว่า 1 ผู้ใช้สามารถมีเพียง 1 ข้อมูลลูกค้าเท่านั้น
